@@ -19,3 +19,4 @@ class Tile(pygame.sprite.Sprite):
         # TODO: assign self.image.get_rect() to self.rect
         # TODO: assign (x, y) to self.rect.topleft
         # TODO: assign pygame.mask.from_surface() to self.mask  The from_surface() function call gets self.image as its argument
+
