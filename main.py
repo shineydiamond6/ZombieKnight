@@ -7,7 +7,7 @@ from game import Game
 from settings import FPS, display_surface, clock
 from tile import Tile
 
-# create sprite groups
+# Create sprite groups
 my_main_tile_group = pygame.sprite.Group()
 my_platform_group = pygame.sprite.Group()
 
@@ -21,9 +21,9 @@ my_ruby_group = pygame.sprite.Group()
 
 my_player = None
 
-# create the title group
-
-
+#Create the tile map
+#0 -> no tile, 1 -> dirt, 2-5 -> platforms, 6 -> ruby maker, 7-8 -> portals, 9 -> player
+# 23 rows and 40 columns
 tile_map = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -50,8 +50,8 @@ tile_map = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ]
 
-# Generate Tile objects from the tile map
-# Loop though the 23 lists (rows) in the title map.
+#Generate Tile objects from the tile map
+#Loop through the 23 lists (rows) in the tile map.
 for row in range(len(tile_map)):
     for col in range(len(tile_map[row])):
         cell = tile_map[row][col]
@@ -60,7 +60,7 @@ for row in range(len(tile_map)):
 
         if cell == 1:
             Tile(x, y, 1, my_main_tile_group)
-        elif 2 <= cell <=5:
+        elif 2 <= cell <= 5:
             Tile(x, y, cell, my_main_tile_group, my_platform_group)
         elif cell == 6:
             pass
@@ -71,40 +71,41 @@ for row in range(len(tile_map)):
         elif cell == 9:
             pass
 
-background_immage = pygame.transform.scale(pygame.image.load("images/background.png), (1280, 736))")
+#Load in a background image (we must resize)
+background_image = pygame.transform.scale(pygame.image.load("images/background.png"), (1280, 736))
 background_rect = background_image.get_rect()
 background_rect.topleft = (0, 0)
 
-#create a game
-my_game = Game(my_player, my_zombie_group, my_portal_group, my_bullet_group, my_ruby_group)
-my_game.pause_gane( "Zombie Knight", "Press 'Enter' to Begin")
-# pygame.mixer.music.play (-1, 0.0)
+#Create a game
+my_game = Game(my_player, my_zombie_group, my_platform_group, my_portal_group, my_bullet_group, my_ruby_group)
+my_game.pause_game("Zombie Knight", "Press 'Enter' to Begin")
+# pygame.mixer.music.play(-1, 0.0)
 
-# the main game loop
+#The main game loop
 running = True
 while running:
-    # check to see if the user wnats to quit
+    #Check to see if the user wants to qui
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.KEYDOWN:
-            # player wants to jump
+            #Player wants to jump
             if event.key == pygame.K_SPACE:
                 # my_player.jump()
-                # player wants to fire
-                pass  # remove after uncommenting jump
-                #player wants to fire
+                pass # Remove after uncommenting jump
+            #Player wants to fire
+            if event.key == pygame.K_UP:
                 # my_player.fire()
-                pass # remove after uncommenting fire
+                pass # Remove after uncommenting fire
 
-    # blit the background
+    #Blit the background
     display_surface.blit(background_image, background_rect)
 
-    # draw tiles and update ruby maker
+    # Draw tiles and update ruby maker
     my_main_tile_group.update()
-    my_platform_group.update()
+    my_main_tile_group.draw(display_surface)
 
-    # update and draw sprite groups
+    #Update and draw sprite groups
     my_portal_group.update()
     my_portal_group.draw(display_surface)
 
@@ -122,15 +123,13 @@ while running:
 
     #update and draw the game
     my_game.update()
-    my_game.draw(display_surface)
+    my_game.draw()
 
-    #update and display and tick the clock
+    #Update the display and tick the clock
     pygame.display.update()
     clock.tick(FPS)
 
-#end thegame
+#End the game
 pygame.quit()
-
-
 
 
